@@ -21,7 +21,7 @@ export class VideoService {
     return this._http.get(this._getUrl).pipe(map((response: Response) => response.json()));
   }
 
-  addVideo(video: Video) {
+  postVideo(video: Video) {
     let header = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: header });
     return this._http.post(this._postUrl, JSON.stringify(video), options).
@@ -36,7 +36,7 @@ export class VideoService {
   }
 
   deleteVideo(video: Video){
-    return this._http.delete(this._deleteUrl+video._id).pipe(map((response: Response) => response.json()));
+    return this._http.delete(this._http+video._id).pipe(map((response: Response) => response.json()));
   }
 
 

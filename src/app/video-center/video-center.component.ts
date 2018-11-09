@@ -1,59 +1,57 @@
-import { VideoService } from './../video.service';
 import { Component, OnInit } from '@angular/core';
-import { Video } from "../video";
+import { Video } from '../video';
+import { VideoService } from '../video.service';
+
 @Component({
   selector: 'app-video-center',
   templateUrl: './video-center.component.html',
-  styleUrls: ['./video-center.component.css'],
-  providers: [VideoService]
+  styleUrls: ['./video-center.component.css']
 })
 export class VideoCenterComponent implements OnInit {
-  selectedVideo: Video;
-  private hidenewVideo: boolean = true;
+  
+  selectedVideo:Video;
+
   videos: Array<Video>;
-  constructor(private _videoService: VideoService) { }
+
+  isNewVideoVisible: Boolean =false;
+
+  constructor(private _videoService : VideoService) { }
 
   ngOnInit() {
-    this._videoService.getVideos()
-      .subscribe(resVideoData => this.videos = resVideoData);
+    this._videoService.getVideos().subscribe(resVideoData=> this.videos = resVideoData);
   }
 
-  onSelectVideo(video: any) {
+  onSelectVideo(video:any)
+  {
     this.selectedVideo = video;
+    this.isNewVideoVisible = false;
     console.log(this.selectedVideo);
   }
 
-  newVideo() {
-    this.hidenewVideo = false;
+  onSubmitAddVideo(video:Video)
+  {
+    this._videoService.postVideo(video).subscribe(resNewVideo => {this.videos.push(resNewVideo);
+    this.selectedVideo = resNewVideo;
+    this.isNewVideoVisible = false;
+  })
   }
 
-  onSubmitAddVideo(video: Video) {
-    this._videoService.addVideo(video)
-      .subscribe(resNewVideo => {
-        this.videos.push(resNewVideo);
-        this.hidenewVideo = true;
-        this.selectedVideo = resNewVideo;
-      });
-
+  makeNewVideoVisible(){
+    this.isNewVideoVisible = true;
   }
-
-  onUpdateVideoEvent(video: any) {
-    this._videoService.updateVideo(video)
-      .subscribe(resUpdatedVideo => video = resUpdatedVideo);
+  onUpdateVideoEvent(video:any)
+  {
+    this._videoService.updateVideo(video).subscribe(resUpdatedVideo => video = resUpdatedVideo);
     this.selectedVideo = null;
-  };
-
-  onDeleteVideoEvent(video: any) {
-    let videoArray = this.videos;
-    this._videoService.deleteVideo(video)
-      .subscribe(resDeletedVideo => {
-        for (let i = 0; i < videoArray.length; i++) {
-          if (videoArray[i]._id === video._id) {
-            videoArray.splice(i, 1);
-          }
+  }
+  onDeleteVideoEvent(video:any){
+    this._videoService.deleteVideo(video).subscribe(resDeletedVideo =>{
+      for(let i=0; i<videos.length; i++){
+        if(videos[i]._id === video._id){
+          videos.splice(i,1);
         }
-      });
-    this.selectedVideo = null;
-  };
-
+      }
+    });
+    this.selectedVideo=null;
+  }
 }

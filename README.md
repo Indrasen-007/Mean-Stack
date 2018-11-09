@@ -25,3 +25,9 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## To run the application
+For the first time, in the terminal , run `npm install` and run `ng build`
+
+1. Run `node server`, to start the Express server (backend)
+2. Run `ng serve` in a different terminal, to the angular server (frontend)
